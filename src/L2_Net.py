@@ -113,6 +113,6 @@ def cal_L2Net_des(net_name, testPatchs, flagCS = False):
 
 data = np.full((1,64,64,1), 0.)
 
-result = cal_L2Net_des("L2Net-HP", data, flagCS=True)
+result = cal_L2Net_des("L2Net-HP+", data, flagCS=True)
 
 print(result)

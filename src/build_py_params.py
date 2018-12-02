@@ -120,7 +120,7 @@ def extract_net(net_name):
 
     print('Successfully scrapped data from MatConvNet Model', net_name)
 
-extract_net("L2Net-HP")
+extract_net("L2Net-HP+")
 extract_net("L2Net-HP")
 extract_net("L2Net-LIB+")
 extract_net("L2Net-LIB")
