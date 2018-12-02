@@ -11,4 +11,4 @@ https://github.com/yuruntian/L2-Net
 
 Requires keras, numpy, pickle and cv2
 
-To get started use the cal_L2Net_des in L2_Net.py which rouphly corresponds to the similarly named function in https://github.com/yuruntian/L2-Net/matlab/cal_L2Net_des.m
+To get started use the function cal_L2Net_des in L2_Net.py which roughly corresponds to the similarly named function in https://github.com/yuruntian/L2-Net/matlab/cal_L2Net_des.m
