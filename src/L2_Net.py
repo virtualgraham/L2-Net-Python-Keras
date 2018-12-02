@@ -66,14 +66,14 @@ def cal_L2Net_des(net_name, testPatchs, flagCS = False):
     net_name : string
         One of "L2Net-HP", "L2Net-HP+", "L2Net-LIB", "L2Net-LIB+", "L2Net-ND", "L2Net-ND+", "L2Net-YOS", "L2Net-YOS+",
     testPatchs : array
-        A numpy array of image data with deimensions (?, 32, 32, 1) or if flagCS (?, 64, 64, 1)
+        A numpy array of image data with deimensions (?, 32, 32, 1), or if using central-surround with deimensions (?, 64, 64, 1)
     flagCS : boolean
-        Use a concated network one for the whole the patch and one for the center of the patch
+        If True, use central-surround network
 
     Returns
     -------
     descriptor
-        Numpy array with size (?, 128) or if flagCS (?, 256)
+        Numpy array with size (?, 128) or if using central-surround (?, 256)
 
     """
 
@@ -91,12 +91,8 @@ def cal_L2Net_des(net_name, testPatchs, flagCS = False):
         testPatchs = np.array([cv2.resize(testPatchs[i], (32,32), interpolation = cv2.INTER_CUBIC) for i in range(0, testPatchs.shape[0])])
         testPatchs = np.expand_dims(testPatchs, axis=-1)
 
-        print(testPatchs)
-
     testPatchs = testPatchs - pix_mean
     testPatchs = np.array([(testPatchs[i] - np.mean(testPatchs[i]))/(np.std(testPatchs[i]) + 1e-12) for i in range(0, testPatchs.shape[0])])
-    
-    print(testPatchs.shape)
 
     res = np.reshape(model.predict(testPatchs), (testPatchs.shape[0], 128))
 

@@ -36,7 +36,7 @@ def extract_net_weights(data, net_name, cen):
 
             weights = i.weights[0]
 
-            # the weights for the first layer are missing the channel dimension
+            # the weights for the first layer are missing a channel dimension
             # add the dimesion here
             if weights.ndim == 3:
                 weights = np.expand_dims(weights, axis=2)
@@ -118,7 +118,7 @@ def extract_net(net_name):
 
     pickle.dump(python_data, open('python_net_data/' + net_name + '.p', "wb" ))
 
-    print('Successfully scrapped data from MatConvNet Model', net_name)
+    print('Successfully scraped data from MatConvNet Model', net_name)
 
 extract_net("L2Net-HP+")
 extract_net("L2Net-HP")
