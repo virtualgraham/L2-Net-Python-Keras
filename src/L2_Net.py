@@ -107,8 +107,44 @@ def cal_L2Net_des(net_name, testPatchs, flagCS = False):
         return res 
 
 
-data = np.full((1,64,64,1), 0.)
+class L2Net:
 
-result = cal_L2Net_des("L2Net-HP+", data, flagCS=True)
+    def __init__(self, net_name, flagCS = False):
+        model, model_cen, pix_mean, pix_mean_cen = build_L2_net(net_name)
+        self.flagCS = flagCS
+        self.model = model
+        self.model_cen = model_cen
+        self.pix_mean = pix_mean
+        self.pix_mean_cen = pix_mean_cen
 
-print(result)
+    def calc_descriptors(self, patches):
+        if self.flagCS:
+
+            patchesCen = patches[:,16:48,16:48,:]
+            patchesCen = patchesCen - self.pix_mean_cen
+            patchesCen = np.array([(patchesCen[i] - np.mean(patchesCen[i]))/(np.std(patchesCen[i]) + 1e-12) for i in range(0, patchesCen.shape[0])])
+
+            patches = np.array([cv2.resize(patches[i], (32,32), interpolation = cv2.INTER_CUBIC) for i in range(0, patches.shape[0])])
+            patches = np.expand_dims(patches, axis=-1)
+
+        patches = patches - self.pix_mean
+        patches = np.array([(patches[i] - np.mean(patches[i]))/(np.std(patches[i]) + 1e-12) for i in range(0, patches.shape[0])])
+
+        res = np.reshape(self.model.predict(patches), (patches.shape[0], 128))
+
+        if self.flagCS:
+            
+            resCen = np.reshape(self.model_cen.predict(patchesCen), (patches.shape[0], 128))
+
+            return np.concatenate((res, resCen), 1)
+
+        else:
+
+            return res 
+
+
+# data = np.full((1,64,64,1), 0.)
+
+# result = cal_L2Net_des("L2Net-HP+", data, flagCS=True)
+
+# print(result)
